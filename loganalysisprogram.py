@@ -7,12 +7,19 @@ DBNAME = "news"
 
 def get_posts(query):
     """ Get the post from the pSQL database using the query argument. """
-    db = psycopg2.connect(database=DBNAME)
-    c = db.cursor()
-    c.execute(query)
-    posts = c.fetchall()
-    db.close()
-    return posts
+    try:
+        db = psycopg2.connect(database=DBNAME)
+        c = db.cursor()
+        c.execute(query)
+        posts = c.fetchall()
+        db.close()
+        return posts
+    except psycopg2.Error as e:
+        print("Unable to connect!")
+        print(e)
+    except Exception as e:
+        print("Unknown error occurred")
+        print(e)
 
 
 def popular_articles():
