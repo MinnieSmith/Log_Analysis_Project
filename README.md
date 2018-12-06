@@ -16,7 +16,9 @@ pip install psycopg2
 
 ## Quick Start Guide
 
-Clone the directory and you should able to run the program out of the box. The program does not accept any input arguments.
+Download the data from [here](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip) and unzip the file.
+
+Clone the directory and put the newsdata.sql file in the same directory.
 
 ```bash
 # Clone the directory.
@@ -28,7 +30,7 @@ cd Log_Analysis_Project
 # Create "news" database.
 createdb news
 
-# Populate the database
+# Populate the database.
 psql -d news -f newsdata.sql
 
 # Run the program in your active Python environment.
