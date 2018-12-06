@@ -1,10 +1,10 @@
 # Log Analysis Project
 
-A reporting tool for extracting useful high level information from a historical database of an article website.
+A reporting tool for extracting useful information from a historical database of an article website.
 
 ## Overview
 
-The website is a newspaper site. It collects information log for each time the reader loads the web page. This information is stored in a relational database. This repository holds a Python 2.7 program which is able to connect to this database, uses SQL queries to analyse the data and outputs useful information.
+The website is a newspaper site which collects information log for each time the reader loads the web page. This information is stored in a relational database. This repository holds a Python 2.7 program which is able to connect to this database and use SQL queries to analyse the data and outputs useful information. The data is in an newsdata.sql file provided by Udacity for this project.
 
 ## Requirements
 
@@ -24,6 +24,12 @@ git clone https://github.com/MinnieSmith/Log_Analysis_Project.git
 
 # Go into the directory.
 cd Log_Analysis_Project
+
+# Create "news" database.
+createdb news
+
+# Populate the database
+psql -d news -f newsdata.sql
 
 # Run the program in your active Python environment.
 python loganalysisprogram.py
