@@ -23,37 +23,51 @@ def get_posts(query):
 
 
 def popular_articles():
-    query = "select articles.title, count(*) as views from articles left join log on " \
-            "(select concat('/article/', articles.slug)) = log.path " \
-            "group by articles.title order by views desc limit 3;"
+    query = " ".join([
+        'SELECT articles.title, COUNT(*) AS views',
+        'FROM articles LEFT JOIN log',
+        'ON (SELECT concat(\'/article/\', articles.slug)) = log.path',
+        'GROUP BY articles.title',
+        'ORDER BY views DESC',
+        'LIMIT 3;'
+        ])
     posts = get_posts(query)
     for (title, count) in posts:
         print('"{}" - {} views'.format(title, count))
 
 
 def popular_authors():
-    query = "select authors.name, count(*) as views " \
-            "from (articles left join log on (select concat('/article/', articles.slug)) = log.path) " \
-            "as articlelog join authors on articlelog.author = authors.id " \
-            "group by authors.name order by views desc limit 3;"
+    query = " ".join([
+        'SELECT authors.name, COUNT(*) AS views',
+        'FROM (articles LEFT JOIN log',
+        'ON (SELECT concat(\'/article/\', articles.slug)) = log.path)',
+        'AS articlelog JOIN authors',
+        'ON articlelog.author = authors.id',
+        'GROUP BY authors.name',
+        'ORDER BY views DESC',
+        'LIMIT 3;'
+    ])
     posts = get_posts(query)
-    for i in range(len(posts)):
-        author = posts[i][0]
-        views = str(posts[i][1])
-        print('{} - {} views'.format(author, views))
+    for (author, count) in posts:
+        print('{} - {} views'.format(author, count))
 
 
 def request_errors():
-    query = "select day, percentage from (select day, ((error_count * 100.0)/(total)) as percentage" \
-            " from (select date_trunc('day', time) as day, " \
-            "count(CASE WHEN STATUS != '200 OK' THEN 1 END) as error_count, count(*) as total from log " \
-            "group by day) as error_table) as error_percentage_table where percentage > 1.0;"
+    query = " ".join([
+        'SELECT day, percentage',
+        'FROM (SELECT day, ((error_count * 100.0)/(total)) AS percentage',
+        'FROM (SELECT date_trunc(\'day\', time) AS day,',
+        'COUNT(CASE WHEN STATUS != \'200 OK\' THEN 1 END) AS error_count,',
+        'COUNT(*) AS total',
+        'FROM log GROUP BY day) AS error_table)',
+        'AS error_percentage_table',
+        'WHERE percentage > 1.0;',
+        ])
     posts = get_posts(query)
-    for i in range(len(posts)):
-        datetime = posts[i][0]
+    for (datetime, percentage) in posts:
         mydate = datetime.strftime("%B-%d, %Y")
-        percentage = str(round(posts[i][1], 2))
-        print('{} - {} %errors'.format(mydate, percentage))
+        mypercentage = str(round(percentage, 2))
+        print('{} - {} %errors'.format(mydate, mypercentage))
 
 
 if __name__ == '__main__':
