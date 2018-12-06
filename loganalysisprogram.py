@@ -27,10 +27,8 @@ def popular_articles():
             "(select concat('/article/', articles.slug)) = log.path " \
             "group by articles.title order by views desc limit 3;"
     posts = get_posts(query)
-    for i in range(len(posts)):
-        article = posts[i][0]
-        views = str(posts[i][1])
-        print('"{}" - {} views'.format(article, views))
+    for (title, count) in posts:
+        print('"{}" - {} views'.format(title, count))
 
 
 def popular_authors():
